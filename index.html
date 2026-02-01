@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Selsabil</title>
+    <style>
+        /* 1. Mise en page et Style Général */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffe6e6; /* Fond rose pâle */
+            font-family: 'Arial', sans-serif;
+            overflow: hidden; /* Empêche le scroll quand le bouton bouge */
+            text-align: center;
+        }
+
+        /* 2. Style du texte */
+        h1 {
+            color: #d32f2f;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            line-height: 1.4;
+        }
+
+        /* 3. Conteneur des boutons */
+        .buttons {
+            display: flex;
+            gap: 20px;
+            position: relative; /* Important pour le positionnement */
+        }
+
+        /* 4. Style des boutons */
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: bold;
+        }
+
+        #yesBtn {
+            background-color: #4CAF50; /* Vert */
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        #noBtn {
+            background-color: #f44336; /* Rouge */
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            position: relative; /* Deviendra absolute via JS */
+        }
+
+        /* 5. Écran de résultat (caché au début) */
+        #result {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s;
+        }
+
+        #result img {
+            max-width: 90%;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        #result h2 {
+            color: #d32f2f;
+            font-size: 2.5rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="question-container">
+        <h1>Selsabil : do you want to be my Valentine ?</h1>
+        <div class="buttons">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <div id="result">
+        <img src="https://media.giphy.com/media/l0amJzVHIAfl7jMDos/giphy.gif" alt="Happy Man">
+        <h2>Good answerrrr ❤️</h2>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionContainer = document.getElementById('question-container');
+        const resultContainer = document.getElementById('result');
+
+        // --- Logique du bouton "No" (La fuite) ---
+        function moveButton() {
+            // Calculer la largeur et hauteur de la fenêtre
+            const xMax = window.innerWidth - noBtn.offsetWidth;
+            const yMax = window.innerHeight - noBtn.offsetHeight;
+
+            // Générer une position aléatoire
+            const randomX = Math.random() * xMax;
+            const randomY = Math.random() * yMax;
+
+            // Appliquer la nouvelle position
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        }
+
+        // Événement pour ordinateur (survol de la souris)
+        noBtn.addEventListener('mouseover', moveButton);
+        
+        // Événement pour téléphone (dès qu'on touche l'écran sur le bouton)
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Empêche le clic de se valider
+            moveButton();
+        });
+        
+        // Sécurité supplémentaire : au clic (si quelqu'un est très rapide)
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            moveButton();
+        });
+
+        // --- Logique du bouton "Yes" ---
+        yesBtn.addEventListener('click', () => {
+            questionContainer.style.display = 'none'; // Cacher la question
+            resultContainer.style.display = 'flex';   // Afficher le résultat
+            
+            // Lancer des confettis (optionnel mais sympa, nécessite une librairie externe, 
+            // ici on reste simple avec le CSS)
+        });
+
+    </script>
+</body>
+</html>
